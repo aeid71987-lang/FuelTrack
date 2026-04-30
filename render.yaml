@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: fueltrack
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn --chdir backend server:app --bind 0.0.0.0:$PORT --workers 1 --timeout 120
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: fueltrack-db
+          property: connectionString
+
+databases:
+  - name: fueltrack-db
+    databaseName: fueltrack
+    user: fueltrack
+    plan: free
